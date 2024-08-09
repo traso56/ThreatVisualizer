@@ -33,20 +33,19 @@ partial class MainForm
         OpenFileButton = new Button();
         VolumeSlider = new NAudio.Gui.VolumeSlider();
         ListBox = new ListBox();
-        ProgressBar = new ProgressBar();
         IncreaseButton = new Button();
         DecreaseButton = new Button();
         ThreatTitleLabel = new Label();
         ThreatLevelLabel = new Label();
         ConfigFileButton = new Button();
-        trackBar1 = new TrackBar();
-        ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
+        ProgressTrackBar = new TrackBar();
+        ((System.ComponentModel.ISupportInitialize)ProgressTrackBar).BeginInit();
         SuspendLayout();
         // 
         // PlayButton
         // 
         PlayButton.Enabled = false;
-        PlayButton.Location = new Point(12, 267);
+        PlayButton.Location = new Point(12, 289);
         PlayButton.Name = "PlayButton";
         PlayButton.Size = new Size(75, 23);
         PlayButton.TabIndex = 1;
@@ -57,7 +56,7 @@ partial class MainForm
         // StopButton
         // 
         StopButton.Enabled = false;
-        StopButton.Location = new Point(12, 296);
+        StopButton.Location = new Point(12, 318);
         StopButton.Name = "StopButton";
         StopButton.Size = new Size(75, 23);
         StopButton.TabIndex = 2;
@@ -67,7 +66,7 @@ partial class MainForm
         // 
         // OpenFileButton
         // 
-        OpenFileButton.Location = new Point(342, 296);
+        OpenFileButton.Location = new Point(342, 318);
         OpenFileButton.Name = "OpenFileButton";
         OpenFileButton.Size = new Size(116, 23);
         OpenFileButton.TabIndex = 3;
@@ -78,7 +77,7 @@ partial class MainForm
         // VolumeSlider
         // 
         VolumeSlider.ImeMode = ImeMode.Katakana;
-        VolumeSlider.Location = new Point(12, 216);
+        VolumeSlider.Location = new Point(12, 238);
         VolumeSlider.Name = "VolumeSlider";
         VolumeSlider.Size = new Size(365, 45);
         VolumeSlider.TabIndex = 5;
@@ -96,15 +95,6 @@ partial class MainForm
         ListBox.DragDrop += ListBox_DragDrop;
         ListBox.DragOver += ListBox_DragOver;
         ListBox.MouseDown += ListBox_MouseDown;
-        // 
-        // ProgressBar
-        // 
-        ProgressBar.Location = new Point(12, 187);
-        ProgressBar.Maximum = 1000;
-        ProgressBar.Name = "ProgressBar";
-        ProgressBar.Size = new Size(365, 23);
-        ProgressBar.Style = ProgressBarStyle.Continuous;
-        ProgressBar.TabIndex = 7;
         // 
         // IncreaseButton
         // 
@@ -147,32 +137,33 @@ partial class MainForm
         // ConfigFileButton
         // 
         ConfigFileButton.Enabled = false;
-        ConfigFileButton.Location = new Point(342, 267);
+        ConfigFileButton.Location = new Point(342, 289);
         ConfigFileButton.Name = "ConfigFileButton";
         ConfigFileButton.Size = new Size(116, 23);
         ConfigFileButton.TabIndex = 12;
         ConfigFileButton.Text = "Read config file";
         ConfigFileButton.UseVisualStyleBackColor = true;
         // 
-        // trackBar1
+        // ProgressTrackBar
         // 
-        trackBar1.Location = new Point(168, 285);
-        trackBar1.Name = "trackBar1";
-        trackBar1.Size = new Size(104, 45);
-        trackBar1.TabIndex = 13;
+        ProgressTrackBar.Enabled = false;
+        ProgressTrackBar.Location = new Point(12, 187);
+        ProgressTrackBar.Maximum = 1;
+        ProgressTrackBar.Name = "ProgressTrackBar";
+        ProgressTrackBar.Size = new Size(365, 45);
+        ProgressTrackBar.TabIndex = 13;
         // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(469, 330);
-        Controls.Add(trackBar1);
+        ClientSize = new Size(469, 355);
+        Controls.Add(ProgressTrackBar);
         Controls.Add(ConfigFileButton);
         Controls.Add(ThreatLevelLabel);
         Controls.Add(ThreatTitleLabel);
         Controls.Add(DecreaseButton);
         Controls.Add(IncreaseButton);
-        Controls.Add(ProgressBar);
         Controls.Add(ListBox);
         Controls.Add(VolumeSlider);
         Controls.Add(OpenFileButton);
@@ -180,7 +171,7 @@ partial class MainForm
         Controls.Add(PlayButton);
         Name = "MainForm";
         Text = "Visualizer";
-        ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
+        ((System.ComponentModel.ISupportInitialize)ProgressTrackBar).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -191,11 +182,10 @@ partial class MainForm
     private Button OpenFileButton;
     private NAudio.Gui.VolumeSlider VolumeSlider;
     private ListBox ListBox;
-    private ProgressBar ProgressBar;
     private Button IncreaseButton;
     private Button DecreaseButton;
     private Label ThreatTitleLabel;
     private Label ThreatLevelLabel;
     private Button ConfigFileButton;
-    private TrackBar trackBar1;
+    private TrackBar ProgressTrackBar;
 }

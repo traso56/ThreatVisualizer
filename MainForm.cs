@@ -41,14 +41,10 @@ public partial class MainForm : Form
 
         _ = Task.Run(async () =>
         {
+            var audiofile = ((ListBoxItem)ListBox.Items[0]).AudioFile;
             while (_polling)
             {
-                var audiofile = ((ListBoxItem)ListBox.Items[0]).AudioFile;
-
-                Invoke(new Action(() =>
-                {
-                    ProgressBar.Value = (int)((double)audiofile.Position / audiofile.Length * 1000);
-                }));
+                Invoke(new Action(() => ProgressTrackBar.Value = (int)audiofile.Position));
 
                 await Task.Delay(100);
             }
@@ -92,6 +88,9 @@ public partial class MainForm : Form
                 PlayButton.Enabled = true;
                 ConfigFileButton.Enabled = true;
                 UpdateThreatLevel();
+
+                ProgressTrackBar.Maximum = (int)((ListBoxItem)ListBox.Items[0]).AudioFile.Length;
+                ProgressTrackBar.Enabled = true;
             }
             catch
             {
