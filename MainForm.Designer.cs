@@ -76,6 +76,7 @@ partial class MainForm
         // 
         // VolumeSlider
         // 
+        VolumeSlider.Enabled = false;
         VolumeSlider.ImeMode = ImeMode.Katakana;
         VolumeSlider.Location = new Point(12, 238);
         VolumeSlider.Name = "VolumeSlider";
@@ -143,15 +144,19 @@ partial class MainForm
         ConfigFileButton.TabIndex = 12;
         ConfigFileButton.Text = "Read config file";
         ConfigFileButton.UseVisualStyleBackColor = true;
+        ConfigFileButton.Click += ConfigFileButton_Click;
         // 
         // ProgressTrackBar
         // 
         ProgressTrackBar.Enabled = false;
         ProgressTrackBar.Location = new Point(12, 187);
-        ProgressTrackBar.Maximum = 1;
         ProgressTrackBar.Name = "ProgressTrackBar";
         ProgressTrackBar.Size = new Size(365, 45);
         ProgressTrackBar.TabIndex = 13;
+        ProgressTrackBar.KeyDown += ProgressTrackBar_KeyDown;
+        ProgressTrackBar.MouseDown += ProgressTrackBar_MouseDown;
+        ProgressTrackBar.MouseUp += ProgressTrackBar_MouseUp;
+        ProgressTrackBar.MouseWheel += ProgressTrackBar_MouseWheel;
         // 
         // MainForm
         // 

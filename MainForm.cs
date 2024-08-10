@@ -1,14 +1,17 @@
 using NAudio.Wave;
+using System.IO;
 
 namespace ThreatVisualizer;
 
 public partial class MainForm : Form
 {
-    private readonly OpenFileDialog _openFileDialog;
+    private readonly OpenFileDialog _openFileDialog = new OpenFileDialog();
     private bool _polling = false;
 
     private int _maxThreat = 0;
     private int _currentThreat = 0;
+
+    private bool _dragging = false;
 
     public MainForm()
     {
@@ -17,11 +20,6 @@ public partial class MainForm : Form
         MaximizeBox = false;
 
         FormClosing += (s, a) => EmptyList();
-
-        _openFileDialog = new OpenFileDialog
-        {
-            Multiselect = true
-        };
 
         ListBox.Items.Add("No files selected");
     }
@@ -44,7 +42,8 @@ public partial class MainForm : Form
             var audiofile = ((ListBoxItem)ListBox.Items[0]).AudioFile;
             while (_polling)
             {
-                Invoke(new Action(() => ProgressTrackBar.Value = (int)audiofile.Position));
+                if (!_dragging)
+                    Invoke(new Action(() => ProgressTrackBar.Value = (int)audiofile.Position));
 
                 await Task.Delay(100);
             }
@@ -72,14 +71,29 @@ public partial class MainForm : Form
     }
     private void OpenFileButton_Click(object sender, EventArgs e)
     {
+        _openFileDialog.Multiselect = true;
+        _openFileDialog.Filter = "Sound files|*.ogg";
         if (_openFileDialog.ShowDialog() == DialogResult.OK)
         {
             EmptyList();
             try
             {
+                long length = 0;
                 for (int i = 0; i < _openFileDialog.FileNames.Length; i++)
                 {
                     ListBox.Items.Add(new ListBoxItem(_openFileDialog.FileNames[i], _openFileDialog.SafeFileNames[i]));
+
+                    if (i == 0)
+                    {
+                        length = ((ListBoxItem)ListBox.Items[0]).AudioFile.Length;
+                    }
+                    else
+                    {
+                        if (((ListBoxItem)ListBox.Items[i]).AudioFile.Length != length)
+                        {
+                            MessageBox.Show("Sound files have different lengths\nPlayback might not work correctly");
+                        }
+                    }
                 }
 
                 _maxThreat = ListBox.Items.Count;
@@ -90,7 +104,9 @@ public partial class MainForm : Form
                 UpdateThreatLevel();
 
                 ProgressTrackBar.Maximum = (int)((ListBoxItem)ListBox.Items[0]).AudioFile.Length;
+                ProgressTrackBar.Value = 0;
                 ProgressTrackBar.Enabled = true;
+                VolumeSlider.Enabled = true;
             }
             catch
             {
@@ -122,6 +138,64 @@ public partial class MainForm : Form
         if (ListBox.Items[0] is ListBoxItem l)
         {
             l.OutputDevice.Volume = VolumeSlider.Volume;
+        }
+    }
+    private void ProgressTrackBar_MouseUp(object sender, MouseEventArgs e)
+    {
+        foreach (var item in ListBox.Items)
+        {
+            if (item is ListBoxItem l)
+            {
+                l.AudioFile.Position = ProgressTrackBar.Value;
+            }
+        }
+        _dragging = false;
+    }
+    private void ProgressTrackBar_MouseDown(object sender, MouseEventArgs e)
+    {
+        _dragging = true;
+    }
+    private void ProgressTrackBar_MouseWheel(object sender, MouseEventArgs e)
+    {
+        ((HandledMouseEventArgs)e).Handled = true;
+    }
+    private void ProgressTrackBar_KeyDown(object sender, KeyEventArgs e)
+    {
+        e.Handled = true;
+    }
+    private void ConfigFileButton_Click(object sender, EventArgs e)
+    {
+        _openFileDialog.Multiselect = false;
+        _openFileDialog.Filter = "Threat config file|*.txt";
+        if (_openFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            string[] lines = File.ReadAllLines(_openFileDialog.FileName);
+
+            int sortedFiles = 0;
+
+            foreach (string line in lines)
+            {
+                for (int i = sortedFiles; i < ListBox.Items.Count; i++)
+                {
+                    var l = (ListBoxItem)ListBox.Items[i];
+                    string onlyName = Path.GetFileNameWithoutExtension(l.FileName);
+
+                    if (line.Contains(onlyName))
+                    {
+                        var data = ListBox.Items[i];
+                        ListBox.Items.Remove(data);
+                        ListBox.Items.Insert(sortedFiles++, data);
+                        continue;
+                    }
+                }
+                if (sortedFiles >= ListBox.Items.Count)
+                    break;
+            }
+
+            if (sortedFiles < ListBox.Items.Count)
+                MessageBox.Show("Not all files were found in the configuration file. Order may be wrong");
+
+            UpdateThreatLevel();
         }
     }
     /********************************************
