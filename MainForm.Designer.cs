@@ -32,20 +32,19 @@ partial class MainForm
         StopButton = new Button();
         OpenFileButton = new Button();
         VolumeSlider = new NAudio.Gui.VolumeSlider();
-        ListBox = new ListBox();
-        IncreaseButton = new Button();
-        DecreaseButton = new Button();
-        ThreatTitleLabel = new Label();
-        ThreatLevelLabel = new Label();
         ConfigFileButton = new Button();
         ProgressTrackBar = new TrackBar();
+        GridView = new DataGridView();
+        ThreatTrackBar = new TrackBar();
         ((System.ComponentModel.ISupportInitialize)ProgressTrackBar).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)GridView).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)ThreatTrackBar).BeginInit();
         SuspendLayout();
         // 
         // PlayButton
         // 
         PlayButton.Enabled = false;
-        PlayButton.Location = new Point(12, 289);
+        PlayButton.Location = new Point(12, 552);
         PlayButton.Name = "PlayButton";
         PlayButton.Size = new Size(75, 23);
         PlayButton.TabIndex = 1;
@@ -56,7 +55,7 @@ partial class MainForm
         // StopButton
         // 
         StopButton.Enabled = false;
-        StopButton.Location = new Point(12, 318);
+        StopButton.Location = new Point(12, 581);
         StopButton.Name = "StopButton";
         StopButton.Size = new Size(75, 23);
         StopButton.TabIndex = 2;
@@ -66,7 +65,7 @@ partial class MainForm
         // 
         // OpenFileButton
         // 
-        OpenFileButton.Location = new Point(342, 318);
+        OpenFileButton.Location = new Point(342, 581);
         OpenFileButton.Name = "OpenFileButton";
         OpenFileButton.Size = new Size(116, 23);
         OpenFileButton.TabIndex = 3;
@@ -78,67 +77,16 @@ partial class MainForm
         // 
         VolumeSlider.Enabled = false;
         VolumeSlider.ImeMode = ImeMode.Katakana;
-        VolumeSlider.Location = new Point(12, 238);
+        VolumeSlider.Location = new Point(12, 501);
         VolumeSlider.Name = "VolumeSlider";
-        VolumeSlider.Size = new Size(365, 45);
+        VolumeSlider.Size = new Size(446, 45);
         VolumeSlider.TabIndex = 5;
         VolumeSlider.VolumeChanged += VolumeSlider_VolumeChanged;
-        // 
-        // ListBox
-        // 
-        ListBox.AllowDrop = true;
-        ListBox.FormattingEnabled = true;
-        ListBox.ItemHeight = 15;
-        ListBox.Location = new Point(12, 12);
-        ListBox.Name = "ListBox";
-        ListBox.Size = new Size(365, 169);
-        ListBox.TabIndex = 6;
-        ListBox.DragDrop += ListBox_DragDrop;
-        ListBox.DragOver += ListBox_DragOver;
-        ListBox.MouseDown += ListBox_MouseDown;
-        // 
-        // IncreaseButton
-        // 
-        IncreaseButton.Location = new Point(383, 12);
-        IncreaseButton.Name = "IncreaseButton";
-        IncreaseButton.Size = new Size(75, 23);
-        IncreaseButton.TabIndex = 8;
-        IncreaseButton.Text = "+";
-        IncreaseButton.UseVisualStyleBackColor = true;
-        IncreaseButton.Click += IncreaseButton_Click;
-        // 
-        // DecreaseButton
-        // 
-        DecreaseButton.Location = new Point(383, 158);
-        DecreaseButton.Name = "DecreaseButton";
-        DecreaseButton.Size = new Size(75, 23);
-        DecreaseButton.TabIndex = 9;
-        DecreaseButton.Text = "-";
-        DecreaseButton.UseVisualStyleBackColor = true;
-        DecreaseButton.Click += DecreaseButton_Click;
-        // 
-        // ThreatTitleLabel
-        // 
-        ThreatTitleLabel.AutoSize = true;
-        ThreatTitleLabel.Location = new Point(383, 74);
-        ThreatTitleLabel.Name = "ThreatTitleLabel";
-        ThreatTitleLabel.Size = new Size(70, 15);
-        ThreatTitleLabel.TabIndex = 10;
-        ThreatTitleLabel.Text = "Threat Level";
-        // 
-        // ThreatLevelLabel
-        // 
-        ThreatLevelLabel.AutoSize = true;
-        ThreatLevelLabel.Location = new Point(383, 98);
-        ThreatLevelLabel.Name = "ThreatLevelLabel";
-        ThreatLevelLabel.Size = new Size(30, 15);
-        ThreatLevelLabel.TabIndex = 11;
-        ThreatLevelLabel.Text = "0 / 0";
         // 
         // ConfigFileButton
         // 
         ConfigFileButton.Enabled = false;
-        ConfigFileButton.Location = new Point(342, 289);
+        ConfigFileButton.Location = new Point(342, 552);
         ConfigFileButton.Name = "ConfigFileButton";
         ConfigFileButton.Size = new Size(116, 23);
         ConfigFileButton.TabIndex = 12;
@@ -149,27 +97,46 @@ partial class MainForm
         // ProgressTrackBar
         // 
         ProgressTrackBar.Enabled = false;
-        ProgressTrackBar.Location = new Point(12, 187);
+        ProgressTrackBar.Location = new Point(12, 450);
         ProgressTrackBar.Name = "ProgressTrackBar";
-        ProgressTrackBar.Size = new Size(365, 45);
+        ProgressTrackBar.Size = new Size(446, 45);
         ProgressTrackBar.TabIndex = 13;
         ProgressTrackBar.KeyDown += ProgressTrackBar_KeyDown;
         ProgressTrackBar.MouseDown += ProgressTrackBar_MouseDown;
         ProgressTrackBar.MouseUp += ProgressTrackBar_MouseUp;
         ProgressTrackBar.MouseWheel += ProgressTrackBar_MouseWheel;
         // 
+        // GridView
+        // 
+        GridView.AllowUserToAddRows = false;
+        GridView.AllowUserToDeleteRows = false;
+        GridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        GridView.Location = new Point(12, 12);
+        GridView.Name = "GridView";
+        GridView.ReadOnly = true;
+        GridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+        GridView.SelectionMode = DataGridViewSelectionMode.CellSelect;
+        GridView.Size = new Size(446, 338);
+        GridView.TabIndex = 14;
+        // 
+        // ThreatTrackBar
+        // 
+        ThreatTrackBar.Enabled = false;
+        ThreatTrackBar.Location = new Point(12, 356);
+        ThreatTrackBar.Maximum = 100;
+        ThreatTrackBar.Name = "ThreatTrackBar";
+        ThreatTrackBar.Size = new Size(446, 45);
+        ThreatTrackBar.TabIndex = 15;
+        // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(469, 355);
+        ClientSize = new Size(967, 718);
+        Controls.Add(ThreatTrackBar);
+        Controls.Add(GridView);
         Controls.Add(ProgressTrackBar);
         Controls.Add(ConfigFileButton);
-        Controls.Add(ThreatLevelLabel);
-        Controls.Add(ThreatTitleLabel);
-        Controls.Add(DecreaseButton);
-        Controls.Add(IncreaseButton);
-        Controls.Add(ListBox);
         Controls.Add(VolumeSlider);
         Controls.Add(OpenFileButton);
         Controls.Add(StopButton);
@@ -177,6 +144,8 @@ partial class MainForm
         Name = "MainForm";
         Text = "Visualizer";
         ((System.ComponentModel.ISupportInitialize)ProgressTrackBar).EndInit();
+        ((System.ComponentModel.ISupportInitialize)GridView).EndInit();
+        ((System.ComponentModel.ISupportInitialize)ThreatTrackBar).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -186,11 +155,8 @@ partial class MainForm
     private Button StopButton;
     private Button OpenFileButton;
     private NAudio.Gui.VolumeSlider VolumeSlider;
-    private ListBox ListBox;
-    private Button IncreaseButton;
-    private Button DecreaseButton;
-    private Label ThreatTitleLabel;
-    private Label ThreatLevelLabel;
     private Button ConfigFileButton;
     private TrackBar ProgressTrackBar;
+    private DataGridView GridView;
+    private TrackBar ThreatTrackBar;
 }

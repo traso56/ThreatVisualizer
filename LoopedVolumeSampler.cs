@@ -3,17 +3,17 @@ using NAudio.Wave;
 
 namespace ThreatVisualizer;
 
-public class LoopedVolumeSampler : ISampleProvider
+public class LoopedVolumeSampler : ISampleProvider, IDisposable
 {
     public bool EnableLooping { get; set; } = true;
-    public WaveFormat WaveFormat => _source.WaveFormat;
     public float Volume { get; set; }
 
-    private readonly VorbisWaveReader _source;
+    public VorbisWaveReader File { get; }
+    public WaveFormat WaveFormat => File.WaveFormat;
 
-    public LoopedVolumeSampler(VorbisWaveReader source)
+    public LoopedVolumeSampler(string path)
     {
-        _source = source;
+        File = new VorbisWaveReader(path);
         Volume = 1f;
     }
 
@@ -23,7 +23,7 @@ public class LoopedVolumeSampler : ISampleProvider
 
         while (totalBytesRead < count)
         {
-            int bytesRead = _source.Read(buffer, offset + totalBytesRead, count - totalBytesRead);
+            int bytesRead = File.Read(buffer, offset + totalBytesRead, count - totalBytesRead);
             if (Volume != 1f)
             {
                 for (int i = 0; i < count - totalBytesRead; i++)
@@ -33,16 +33,34 @@ public class LoopedVolumeSampler : ISampleProvider
             }
             if (bytesRead == 0)
             {
-                if (_source.Position == 0 || !EnableLooping)
+                if (File.Position == 0 || !EnableLooping)
                 {
                     // something wrong with the source stream
                     break;
                 }
                 // loop
-                _source.Position = 0;
+                File.Position = 0;
             }
             totalBytesRead += bytesRead;
         }
         return totalBytesRead;
     }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            File.Dispose();
+        }
+    }
+    ~LoopedVolumeSampler()
+    {
+        Dispose(false);
+    }
 }
+
