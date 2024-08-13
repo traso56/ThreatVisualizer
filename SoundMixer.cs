@@ -88,10 +88,6 @@ public class SoundMixer : IDisposable
     public void Randomize()
     {
         _layerIndexes.Clear();
-        for (int i = 0; i < Layers; i++)
-            _layerIndexes.Add(-1);
-
-        _layerIndexes.Clear();
 
         for (int i = 0; i < Layers; i++)
         {
