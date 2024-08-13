@@ -1,5 +1,5 @@
-using NAudio.Wave;
-using System.IO;
+using NAudio.Mixer;
+using System.Windows.Forms;
 
 namespace ThreatVisualizer;
 
@@ -23,22 +23,27 @@ public partial class MainForm : Form
 
         GridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
         GridView.GridColor = Color.Black;
+
+        //PopulateDataGridView();
     }
     private void PopulateDataGridView()
     {
+        GridView.ColumnCount = 6;
+
         GridView.Columns[0].Name = "1";
         GridView.Columns[1].Name = "2";
         GridView.Columns[2].Name = "3";
         GridView.Columns[3].Name = "4";
         GridView.Columns[4].Name = "5";
-        GridView.Columns[4].Name = "6";
+        GridView.Columns[5].Name = "6";
 
-        string[] row0 = ["", "", "", "", "", ""];
+
+        string[] row0 = ["a", "b", "r", "a", "g", ""];
         string[] row1 = ["", "", "", "", "", ""];
-        string[] row2 = ["", "", "", "", "", ""];
-        string[] row3 = ["", "", "", "", "", ""];
-        string[] row4 = ["", "", "", "", "", ""];
-        string[] row5 = ["", "", "", "", "", ""];
+        string[] row2 = ["a", "", "", "", "", ""];
+        string[] row3 = ["nb", "", "", "", "", ""];
+        string[] row4 = ["e", "", "", "", "", ""];
+        string[] row5 = ["t", "", "", "", "", ""];
 
         GridView.Rows.Add(row0);
         GridView.Rows.Add(row1);
@@ -53,6 +58,8 @@ public partial class MainForm : Form
         GridView.Rows[3].HeaderCell.Value = "Song4";
         GridView.Rows[4].HeaderCell.Value = "Song5";
         GridView.Rows[5].HeaderCell.Value = "Song6";
+
+        GridView.Rows[2].Cells[2].Style.BackColor = Color.Teal;
 
     }
     /********************************************
@@ -75,6 +82,7 @@ public partial class MainForm : Form
         });
         PlayButton.Enabled = false;
         StopButton.Enabled = true;
+        RerollButton.Enabled = false;
         OpenFileButton.Enabled = false;
         ConfigFileButton.Enabled = false;
     }
@@ -86,6 +94,7 @@ public partial class MainForm : Form
 
         PlayButton.Enabled = true;
         StopButton.Enabled = false;
+        RerollButton.Enabled = true;
         OpenFileButton.Enabled = true;
         ConfigFileButton.Enabled = true;
     }
@@ -103,25 +112,24 @@ public partial class MainForm : Form
 
             _mixer = new SoundMixer(_openFileDialog.FileNames);
 
-            MessageBox.Show($"Loaded {_openFileDialog.FileNames.Length} files");
-
             if (!_mixer.AllSameLength)
                 MessageBox.Show("Some files have different lengths. Playback might not work correctly.");
 
-            PlayButton.Enabled = true;
             ConfigFileButton.Enabled = true;
 
-            VolumeSlider.Enabled = true;
             ProgressTrackBar.Maximum = (int)_mixer.Readers[0].File.Length;
             ProgressTrackBar.Value = 0;
-            ProgressTrackBar.Enabled = true;
 
-            // REMOVE
+            PlayButton.Enabled = false;
+            StopButton.Enabled = false;
+            RerollButton.Enabled = false;
+            VolumeSlider.Enabled = false;
+            ProgressTrackBar.Enabled = false;
+            ThreatTrackBar.Enabled = false;
+
             GridView.Rows.Clear();
 
             GridView.ColumnCount = 1;
-
-            GridView.Columns[0].Name = "1";
 
             for (int i = 0; i < _mixer.FileNames.Count; i++)
                 GridView.Rows.Add("");
@@ -133,6 +141,29 @@ public partial class MainForm : Form
         {
             MessageBox.Show("One or more of the files could not be read!");
         }
+    }
+    private void ConfigFileButton_Click(object sender, EventArgs e)
+    {
+        _openFileDialog.Multiselect = false;
+        _openFileDialog.Filter = "Threat config file|*.txt";
+
+        if (_openFileDialog.ShowDialog() != DialogResult.OK)
+            return;
+
+        _mixer.ReadConfig(_openFileDialog.FileName);
+        _mixer.Draw(GridView);
+
+        PlayButton.Enabled = true;
+        RerollButton.Enabled = true;
+
+        VolumeSlider.Enabled = true;
+        ProgressTrackBar.Enabled = true;
+        ThreatTrackBar.Enabled = true;
+    }
+    private void RerollButton_Click(object sender, EventArgs e)
+    {
+        _mixer.Randomize();
+        _mixer.Draw(GridView);
     }
     private void VolumeSlider_VolumeChanged(object sender, EventArgs e)
     {
@@ -157,22 +188,13 @@ public partial class MainForm : Form
     {
         e.Handled = true;
     }
-    private void ConfigFileButton_Click(object sender, EventArgs e)
+    private void GridView_SelectionChanged(object sender, EventArgs e)
     {
-        _openFileDialog.Multiselect = false;
-        _openFileDialog.Filter = "Threat config file|*.txt";
+        GridView.ClearSelection();
+    }
 
-        if (_openFileDialog.ShowDialog() != DialogResult.OK)
-            return;
-
-        string[] lines = File.ReadAllLines(_openFileDialog.FileName);
-
-        foreach (var line in lines)
-        {
-            if (line.StartsWith("Layer :"))
-            {
-
-            }
-        }
+    private void ThreatTrackBar_ValueChanged(object sender, EventArgs e)
+    {
+        ThreatPercentageLabel.Text = ThreatTrackBar.Value.ToString();
     }
 }

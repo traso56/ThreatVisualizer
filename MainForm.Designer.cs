@@ -36,6 +36,10 @@ partial class MainForm
         ProgressTrackBar = new TrackBar();
         GridView = new DataGridView();
         ThreatTrackBar = new TrackBar();
+        ThreatLabel = new Label();
+        ProgressLabel = new Label();
+        RerollButton = new Button();
+        ThreatPercentageLabel = new Label();
         ((System.ComponentModel.ISupportInitialize)ProgressTrackBar).BeginInit();
         ((System.ComponentModel.ISupportInitialize)GridView).BeginInit();
         ((System.ComponentModel.ISupportInitialize)ThreatTrackBar).BeginInit();
@@ -44,9 +48,9 @@ partial class MainForm
         // PlayButton
         // 
         PlayButton.Enabled = false;
-        PlayButton.Location = new Point(12, 552);
+        PlayButton.Location = new Point(655, 298);
         PlayButton.Name = "PlayButton";
-        PlayButton.Size = new Size(75, 23);
+        PlayButton.Size = new Size(105, 23);
         PlayButton.TabIndex = 1;
         PlayButton.Text = "Play";
         PlayButton.UseVisualStyleBackColor = true;
@@ -55,9 +59,9 @@ partial class MainForm
         // StopButton
         // 
         StopButton.Enabled = false;
-        StopButton.Location = new Point(12, 581);
+        StopButton.Location = new Point(655, 327);
         StopButton.Name = "StopButton";
-        StopButton.Size = new Size(75, 23);
+        StopButton.Size = new Size(105, 23);
         StopButton.TabIndex = 2;
         StopButton.Text = "Stop";
         StopButton.UseVisualStyleBackColor = true;
@@ -65,9 +69,9 @@ partial class MainForm
         // 
         // OpenFileButton
         // 
-        OpenFileButton.Location = new Point(342, 581);
+        OpenFileButton.Location = new Point(655, 12);
         OpenFileButton.Name = "OpenFileButton";
-        OpenFileButton.Size = new Size(116, 23);
+        OpenFileButton.Size = new Size(105, 23);
         OpenFileButton.TabIndex = 3;
         OpenFileButton.Text = "Open files";
         OpenFileButton.UseVisualStyleBackColor = true;
@@ -77,18 +81,18 @@ partial class MainForm
         // 
         VolumeSlider.Enabled = false;
         VolumeSlider.ImeMode = ImeMode.Katakana;
-        VolumeSlider.Location = new Point(12, 501);
+        VolumeSlider.Location = new Point(655, 392);
         VolumeSlider.Name = "VolumeSlider";
-        VolumeSlider.Size = new Size(446, 45);
+        VolumeSlider.Size = new Size(105, 45);
         VolumeSlider.TabIndex = 5;
         VolumeSlider.VolumeChanged += VolumeSlider_VolumeChanged;
         // 
         // ConfigFileButton
         // 
         ConfigFileButton.Enabled = false;
-        ConfigFileButton.Location = new Point(342, 552);
+        ConfigFileButton.Location = new Point(655, 41);
         ConfigFileButton.Name = "ConfigFileButton";
-        ConfigFileButton.Size = new Size(116, 23);
+        ConfigFileButton.Size = new Size(105, 23);
         ConfigFileButton.TabIndex = 12;
         ConfigFileButton.Text = "Read config file";
         ConfigFileButton.UseVisualStyleBackColor = true;
@@ -99,7 +103,7 @@ partial class MainForm
         ProgressTrackBar.Enabled = false;
         ProgressTrackBar.Location = new Point(12, 450);
         ProgressTrackBar.Name = "ProgressTrackBar";
-        ProgressTrackBar.Size = new Size(446, 45);
+        ProgressTrackBar.Size = new Size(637, 45);
         ProgressTrackBar.TabIndex = 13;
         ProgressTrackBar.KeyDown += ProgressTrackBar_KeyDown;
         ProgressTrackBar.MouseDown += ProgressTrackBar_MouseDown;
@@ -116,8 +120,9 @@ partial class MainForm
         GridView.ReadOnly = true;
         GridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
         GridView.SelectionMode = DataGridViewSelectionMode.CellSelect;
-        GridView.Size = new Size(446, 338);
+        GridView.Size = new Size(637, 338);
         GridView.TabIndex = 14;
+        GridView.SelectionChanged += GridView_SelectionChanged;
         // 
         // ThreatTrackBar
         // 
@@ -125,14 +130,57 @@ partial class MainForm
         ThreatTrackBar.Location = new Point(12, 356);
         ThreatTrackBar.Maximum = 100;
         ThreatTrackBar.Name = "ThreatTrackBar";
-        ThreatTrackBar.Size = new Size(446, 45);
+        ThreatTrackBar.Size = new Size(637, 45);
         ThreatTrackBar.TabIndex = 15;
+        ThreatTrackBar.ValueChanged += ThreatTrackBar_ValueChanged;
+        // 
+        // ThreatLabel
+        // 
+        ThreatLabel.AutoSize = true;
+        ThreatLabel.Location = new Point(655, 356);
+        ThreatLabel.Name = "ThreatLabel";
+        ThreatLabel.Size = new Size(53, 15);
+        ThreatLabel.TabIndex = 16;
+        ThreatLabel.Text = "Threat %";
+        // 
+        // ProgressLabel
+        // 
+        ProgressLabel.AutoSize = true;
+        ProgressLabel.Location = new Point(655, 450);
+        ProgressLabel.Name = "ProgressLabel";
+        ProgressLabel.Size = new Size(82, 15);
+        ProgressLabel.TabIndex = 17;
+        ProgressLabel.Text = "Song progress";
+        // 
+        // RerollButton
+        // 
+        RerollButton.Enabled = false;
+        RerollButton.Location = new Point(655, 169);
+        RerollButton.Name = "RerollButton";
+        RerollButton.Size = new Size(105, 23);
+        RerollButton.TabIndex = 18;
+        RerollButton.Text = "Randomize";
+        RerollButton.UseVisualStyleBackColor = true;
+        RerollButton.Click += RerollButton_Click;
+        // 
+        // ThreatPercentageLabel
+        // 
+        ThreatPercentageLabel.AutoSize = true;
+        ThreatPercentageLabel.Location = new Point(714, 356);
+        ThreatPercentageLabel.Name = "ThreatPercentageLabel";
+        ThreatPercentageLabel.Size = new Size(13, 15);
+        ThreatPercentageLabel.TabIndex = 19;
+        ThreatPercentageLabel.Text = "0";
         // 
         // MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(967, 718);
+        ClientSize = new Size(771, 493);
+        Controls.Add(ThreatPercentageLabel);
+        Controls.Add(RerollButton);
+        Controls.Add(ProgressLabel);
+        Controls.Add(ThreatLabel);
         Controls.Add(ThreatTrackBar);
         Controls.Add(GridView);
         Controls.Add(ProgressTrackBar);
@@ -159,4 +207,8 @@ partial class MainForm
     private TrackBar ProgressTrackBar;
     private DataGridView GridView;
     private TrackBar ThreatTrackBar;
+    private Label ThreatLabel;
+    private Label ProgressLabel;
+    private Button RerollButton;
+    private Label ThreatPercentageLabel;
 }
