@@ -85,7 +85,6 @@ public class SoundMixer : IDisposable
 
         Randomize();
     }
-
     public void Randomize()
     {
         _layerIndexes.Clear();
@@ -122,8 +121,6 @@ public class SoundMixer : IDisposable
             }
         }
     }
-
-
     public void Draw(DataGridView grid)
     {
         grid.Rows.Clear();
@@ -153,6 +150,29 @@ public class SoundMixer : IDisposable
                         grid.Rows[j].Cells[i].Style.BackColor = Color.Green;
                         break;
                 }
+            }
+        }
+    }
+    public void AdjustThreat(int percentage)
+    {
+        foreach (var reader in Readers)
+            reader.Volume = 0f;
+
+        float level = percentage / 100f;
+
+        for (int i = 0; i < Layers; i++)
+        {
+            float value = (float)(i + 1) / Layers;
+            if (level > value && _layerIndexes[i] >= 0)
+            {
+                Readers[_layerIndexes[i]].Volume = 1f;
+            }
+            else if (_layerIndexes[i] >= 0)
+            {
+                float fraction = level - (float)i / Layers;
+                float volume = fraction / (1f / Layers);
+                Readers[_layerIndexes[i]].Volume = volume;
+                break;
             }
         }
     }

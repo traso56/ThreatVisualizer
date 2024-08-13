@@ -81,7 +81,7 @@ partial class MainForm
         // 
         VolumeSlider.Enabled = false;
         VolumeSlider.ImeMode = ImeMode.Katakana;
-        VolumeSlider.Location = new Point(655, 392);
+        VolumeSlider.Location = new Point(654, 247);
         VolumeSlider.Name = "VolumeSlider";
         VolumeSlider.Size = new Size(105, 45);
         VolumeSlider.TabIndex = 5;
@@ -101,7 +101,7 @@ partial class MainForm
         // ProgressTrackBar
         // 
         ProgressTrackBar.Enabled = false;
-        ProgressTrackBar.Location = new Point(12, 450);
+        ProgressTrackBar.Location = new Point(12, 395);
         ProgressTrackBar.Name = "ProgressTrackBar";
         ProgressTrackBar.Size = new Size(637, 45);
         ProgressTrackBar.TabIndex = 13;
@@ -137,7 +137,7 @@ partial class MainForm
         // ThreatLabel
         // 
         ThreatLabel.AutoSize = true;
-        ThreatLabel.Location = new Point(655, 356);
+        ThreatLabel.Location = new Point(654, 356);
         ThreatLabel.Name = "ThreatLabel";
         ThreatLabel.Size = new Size(53, 15);
         ThreatLabel.TabIndex = 16;
@@ -146,7 +146,7 @@ partial class MainForm
         // ProgressLabel
         // 
         ProgressLabel.AutoSize = true;
-        ProgressLabel.Location = new Point(655, 450);
+        ProgressLabel.Location = new Point(654, 395);
         ProgressLabel.Name = "ProgressLabel";
         ProgressLabel.Size = new Size(82, 15);
         ProgressLabel.TabIndex = 17;
@@ -166,7 +166,7 @@ partial class MainForm
         // ThreatPercentageLabel
         // 
         ThreatPercentageLabel.AutoSize = true;
-        ThreatPercentageLabel.Location = new Point(714, 356);
+        ThreatPercentageLabel.Location = new Point(713, 356);
         ThreatPercentageLabel.Name = "ThreatPercentageLabel";
         ThreatPercentageLabel.Size = new Size(13, 15);
         ThreatPercentageLabel.TabIndex = 19;
@@ -176,7 +176,7 @@ partial class MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(771, 493);
+        ClientSize = new Size(771, 448);
         Controls.Add(ThreatPercentageLabel);
         Controls.Add(RerollButton);
         Controls.Add(ProgressLabel);

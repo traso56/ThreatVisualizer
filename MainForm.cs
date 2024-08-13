@@ -151,6 +151,7 @@ public partial class MainForm : Form
             return;
 
         _mixer.ReadConfig(_openFileDialog.FileName);
+        _mixer.AdjustThreat(ThreatTrackBar.Value);
         _mixer.Draw(GridView);
 
         PlayButton.Enabled = true;
@@ -163,6 +164,7 @@ public partial class MainForm : Form
     private void RerollButton_Click(object sender, EventArgs e)
     {
         _mixer.Randomize();
+        _mixer.AdjustThreat(ThreatTrackBar.Value);
         _mixer.Draw(GridView);
     }
     private void VolumeSlider_VolumeChanged(object sender, EventArgs e)
@@ -196,5 +198,6 @@ public partial class MainForm : Form
     private void ThreatTrackBar_ValueChanged(object sender, EventArgs e)
     {
         ThreatPercentageLabel.Text = ThreatTrackBar.Value.ToString();
+        _mixer.AdjustThreat(ThreatTrackBar.Value);
     }
 }
