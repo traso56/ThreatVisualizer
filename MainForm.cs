@@ -82,7 +82,6 @@ public partial class MainForm : Form
         });
         PlayButton.Enabled = false;
         StopButton.Enabled = true;
-        RerollButton.Enabled = false;
         OpenFileButton.Enabled = false;
         ConfigFileButton.Enabled = false;
     }
@@ -94,7 +93,6 @@ public partial class MainForm : Form
 
         PlayButton.Enabled = true;
         StopButton.Enabled = false;
-        RerollButton.Enabled = true;
         OpenFileButton.Enabled = true;
         ConfigFileButton.Enabled = true;
     }

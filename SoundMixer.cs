@@ -159,15 +159,19 @@ public class SoundMixer : IDisposable
         for (int i = 0; i < Layers; i++)
         {
             float value = (float)(i + 1) / Layers;
-            if (level > value && _layerIndexes[i] >= 0)
+            if (level > value)
             {
-                Readers[_layerIndexes[i]].Volume = 1f;
+                if (_layerIndexes[i] >= 0)
+                    Readers[_layerIndexes[i]].Volume = 1f;
             }
-            else if (_layerIndexes[i] >= 0)
+            else
             {
-                float fraction = level - (float)i / Layers;
-                float volume = fraction / (1f / Layers);
-                Readers[_layerIndexes[i]].Volume = volume;
+                if (_layerIndexes[i] >= 0)
+                {
+                    float fraction = level - (float)i / Layers;
+                    float volume = fraction / (1f / Layers);
+                    Readers[_layerIndexes[i]].Volume = volume;
+                }
                 break;
             }
         }
