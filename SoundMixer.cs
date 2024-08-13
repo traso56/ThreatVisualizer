@@ -91,10 +91,7 @@ public class SoundMixer : IDisposable
 
         for (int i = 0; i < Layers; i++)
         {
-            List<int> possible = [];
-            possible.AddRange(_possibleIndexes[i]);
-            possible = possible.Distinct().ToList();
-            possible = possible.Except(_layerIndexes).ToList();
+            List<int> possible = _possibleIndexes[i].Except(_layerIndexes).ToList();
 
             if (possible.Count > 0)
             {
