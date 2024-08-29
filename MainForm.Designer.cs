@@ -122,6 +122,7 @@ partial class MainForm
         GridView.SelectionMode = DataGridViewSelectionMode.CellSelect;
         GridView.Size = new Size(637, 338);
         GridView.TabIndex = 14;
+        GridView.CellClick += GridView_CellClick;
         GridView.SelectionChanged += GridView_SelectionChanged;
         // 
         // ThreatTrackBar

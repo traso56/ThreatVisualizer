@@ -89,13 +89,14 @@ public class SoundMixer : IDisposable
     {
         _layerIndexes.Clear();
 
+        Random rng = new Random();
+
         for (int i = 0; i < Layers; i++)
         {
             List<int> possible = _possibleIndexes[i].Except(_layerIndexes).ToList();
 
             if (possible.Count > 0)
             {
-                Random rng = new Random();
                 _layerIndexes.Add(possible[rng.Next(possible.Count)]);
             }
             else
@@ -104,13 +105,32 @@ public class SoundMixer : IDisposable
             }
         }
 
+        FillCellStates();
+    }
+    public void ChangeSelection(int col, int row)
+    {
+        int songIndex = _layerIndexes.IndexOf(row);
+        if (songIndex >= 0)
+        {
+            _layerIndexes[songIndex] = -1;
+        }
+
+        _layerIndexes[col] = row;
+
+        FillCellStates();
+    }
+    private void FillCellStates()
+    {
         for (int i = 0; i < Layers; i++)
         {
-            foreach (int j in _possibleIndexes[i])
-                _cells[i, j] = CellState.Available;
-            if (_layerIndexes[i] >= 0)
+            for (int j = 0; j < SongAmount; j++)
             {
-                _cells[i, _layerIndexes[i]] = CellState.Selected;
+                if (_layerIndexes[i] == j)
+                    _cells[i, j] = CellState.Selected;
+                else if (_possibleIndexes[i].Contains(j))
+                    _cells[i, j] = CellState.Available;
+                else
+                    _cells[i, j] = CellState.Empty;
             }
         }
     }

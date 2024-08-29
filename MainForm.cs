@@ -10,6 +10,8 @@ public partial class MainForm : Form
     private bool _polling = false;
     private bool _dragging = false;
 
+    private bool _enabledSelection = false;
+
     private SoundMixer _mixer = null!;
 
     public MainForm()
@@ -106,6 +108,8 @@ public partial class MainForm : Form
 
         try
         {
+            _enabledSelection = false;
+
             _mixer?.Dispose();
 
             _mixer = new SoundMixer(_openFileDialog.FileNames);
@@ -158,12 +162,15 @@ public partial class MainForm : Form
         VolumeSlider.Enabled = true;
         ProgressTrackBar.Enabled = true;
         ThreatTrackBar.Enabled = true;
+
+        _enabledSelection = true;
     }
     private void RerollButton_Click(object sender, EventArgs e)
     {
         _mixer.Randomize();
         _mixer.AdjustThreat(ThreatTrackBar.Value);
         _mixer.Draw(GridView);
+        GridView.ClearSelection();
     }
     private void VolumeSlider_VolumeChanged(object sender, EventArgs e)
     {
@@ -190,12 +197,24 @@ public partial class MainForm : Form
     }
     private void GridView_SelectionChanged(object sender, EventArgs e)
     {
-        GridView.ClearSelection();
+        if (!_enabledSelection)
+            GridView.ClearSelection();
     }
 
     private void ThreatTrackBar_ValueChanged(object sender, EventArgs e)
     {
         ThreatPercentageLabel.Text = ThreatTrackBar.Value.ToString();
         _mixer.AdjustThreat(ThreatTrackBar.Value);
+    }
+
+    private void GridView_CellClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (GridView.SelectedCells.Count == 1 && _enabledSelection)
+        {
+            _mixer.ChangeSelection(e.ColumnIndex, e.RowIndex);
+            _mixer.AdjustThreat(ThreatTrackBar.Value);
+            _mixer.Draw(GridView);
+        }
+        GridView.ClearSelection();
     }
 }
