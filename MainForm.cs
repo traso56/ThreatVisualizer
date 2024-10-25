@@ -108,6 +108,16 @@ public partial class MainForm : Form
 
         try
         {
+            foreach (var file in _openFileDialog.FileNames)
+            {
+                if (new FileInfo(file).Length == 0)
+                {
+                    MessageBox.Show("One or more files are 0 bytes, vanilla and downpour sound files are in a separate bundle.\n\n" +
+                        "You can check the readme of this program for more info.");
+                    return;
+                }
+            }
+
             _enabledSelection = false;
 
             _mixer?.Dispose();
